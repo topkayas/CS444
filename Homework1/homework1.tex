@@ -105,6 +105,10 @@
 
 \subsection*{Conqurency 1}
 
+\subsubsection*{Write-up of Concurreny solution}
+
+My implementation of the concurrency problem was done in C language. I have used Mersenne Twister to generate my random numbers. The problem has some contraints such as, while an item is being added or removed from the buffer, the buffer must be in an inconsistent state, I have acheived this through locking my the buffer for the specific thread that has to use it. Also if a consumer thread arrives while buffer is empty, it has to clock until producer adds a new item, I have achieved this by creating a checkempty funtion, this function check if the buffer is empty, and initalizes it to 1 or in other words true if so. Another constraint was that a producer thread should be able to put more items if the buffer is full, I have achieved this by using the same function but in !checkempty format. I have used getrandinit32 funtion for creating my random numbers.
+
 \subsubsection*{Reflection}
 	1. I think the main point was to learn how to use program multi-threaded programs, this assignment refreashed my memory working with them.\\
 	2. Since I did not remember too much, I read and watched few videos on producer-consumer problems. Also I approached the assignment piece by piece I created threads then worked on producer first, once I was sure the thread was doing what it was supposed to do, I continued working on the consumer.\\
