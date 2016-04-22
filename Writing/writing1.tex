@@ -1,0 +1,78 @@
+\documentclass[letterpaper,10pt,draftclsnofoot,onecolumn]{IEEEtran}
+
+\usepackage{graphicx}                                        
+\usepackage{amssymb}                                         
+\usepackage{amsmath}                                         
+\usepackage{amsthm}                                          
+
+\usepackage{alltt}                                           
+\usepackage{float}
+\usepackage{color}
+\usepackage{url}
+\usepackage{upquote}
+\usepackage{array}
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+\usepackage{pstricks, pst-node}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+
+%random comment
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+
+\def\name{Sinan Topkaya}
+
+%pull in the necessary preamble matter for pygments output
+%\input{pygments.tex}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {cs444 ``WR1'' Writing 1},
+  pdftitle = {CS 444 Writing 1: Writing1},
+  pdfsubject = {CS 444},
+  pdfpagemode = UseNone
+}
+
+\parindent = 0.0 in
+\parskip = 0.2 in
+
+\begin{document}
+
+
+	\begin{titlepage}
+		
+		\begin{center}
+		\bigbreak	
+		\textbf{Operating System Feature Comparison: Processes and Acheduling}
+		\bigbreak
+		by Sinan Topkaya
+		\smallbreak
+		CS 444 - Spring 2016
+		\end{center}
+		\vfill
+		
+		Abstract: This paper will examine processes, threads and CPU scheduling for Windows and FreeBSD operating systems. It will mainly be about how these operating systems implement them and how is it different compared to Linux. Specifically, it will answer the questions: How do they differ? How are they the same? and Why do i think these similarities or differences exist. 
+		
+	\end{titlepage}
+
+\section*{Writing Assignment - Processes and Scheduling Comparison}
+
+\subsection*{Windows}
+\subsubsection*{Processes}
+\subsubsection*{Threads}
+\subsubsection*{CPU Scheduling}
+
+My implementation of the concurrency problem was done in C language. I have used Mersenne Twister to generate my random numbers. The problem has some contraints such as, while an item is being added or removed from the buffer, the buffer must be in an inconsistent state, I have acheived this through locking my the buffer for the specific thread that has to use it. Also if a consumer thread arrives while buffer is empty, it has to clock until producer adds a new item, I have achieved this by creating a checkempty funtion, this function check if the buffer is empty, and initalizes it to 1 or in other words true if so. Another constraint was that a producer thread should be able to put more items if the buffer is full, I have achieved this by using the same function but in !checkempty format. I have used getrandinit32 funtion for creating my random numbers.
+
+\end{document}
