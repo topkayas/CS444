@@ -82,9 +82,9 @@ In this section I will write about how various data strctures involved in proces
 
 Process Object: \verb|EPROCESS| structure has many key fields. APIs and components are divided into layered modules with their own naming. For example one of the key field(member) of a executive process structure is called Pcb, or in other words process control block. This is a struture of type \verb|KPROCESS|, for kernel process. Although routines store information in EPROCESS, the dispatcher, scheduler and inturrept/time use KPROCESS. Therefore allowing a layer to exist between high-level functionality and its underlying low-level implementation of functions, this also helps prevent unwanted dependencies between layers. Data structure \verb|PEB| lives in the user-mode adress space of the process, it contains information needed by image loader, the heap manager, and other Windows components that need to access it from user mode. The \verb|CSR_PROCESS| structure contains information about processes that is specific to the Windows subsystem. \verb|W32PROCESS| strcuture contains information that the Windows graphics and window management code in kernel needs to maintain state information about GUI processes.Each of these data structures have different process structure and hold important information about the Process.
 
-CrateProcess: Creating a process involves many steps
+CreateProcess: Creating a process involves many steps
 \begin{enumerate}
-\item Validate parameters; coonver Windows subsystem flags and options to their native counterparts; parse, validate, and convert the attribute list to its native counterpart.
+\item Validate parameters; convert Windows subsystem flags and options to their native counterparts; parse, validate, and convert the attribute list to its native counterpart.
 \item Open the image file(.exe) to be executed inside the process.
 \item Create the Windows executive process object
 \item Create the initial thread
@@ -170,15 +170,19 @@ For example multiprocessor scheduling is used when a runnable as a result of wak
 
 \subsection*{Answer to the questions}
 \subsection*{Windows}
-\subsubsection*{How is it different compared to Linux?}
-\subsubsection*{How is it similar to Linux?}
-\subsubsection*{Why do I think these similarities or differences exist?}
+\subsubsection*{How is it different compared to Linux? and How is is similar to Linux? and Why?}
+
+Process and Threads: In Windows a process hold the address space, handle table, statistics and at least one thread and it does not inherent parent/child relationship. While Linux process is called a task and although it also hold the informations basic address space, handle table and statistics it does not have to have a thread. Linux does inherent parent.child relationship and uses basic scheduling unit to schedule tasks. Inlinux there are no threads per-se, tasks can act like Windows threads by sharing handle table, PID and address space. Windows uses basic scheduling unit to schedule threads and Fibers are used for cooperative user-mode threads while Pthreats are used for Linux for cooperative user-mode threads
+
+CPU Scheduling: In Windows there are 2 scheduling classes: Real-time and Dynamic, while Linux can have 3 scheduling classes, normal, fixed round robin and fixed fifo. Windows favors higher priorities while threads favor lower priorities. In linux priorities of normal threads decay as they use CPU,  and priorities of interactive threads boost. In Windows prioritie of dynamic threads get boosted on wakeups and thread prioroties are never lowered. In both operating systems the newly created thread starts with a base priority.
+
+Although they have differences between each other, a user can ultimately accomplish the same things. It is a matter of what you need and if possible to know, want to use. We must understand that although the functions work differently they ultimately try to accomplish the same end result. For example \verb|pthread_create| and \verb|CreateThread| are really similar however they have different parameters.
 
 \subsection*{FreeBSD}
-\subsubsection*{How is it didderent compared to Linux?}
-\subsubsection*{How is it similar to Linux?}
-\subsubsection*{Why do I think these similarities or differences exist?}
+\subsubsection*{How is it didderent compared to Linux? and How is it similar to Linux? and Why?}
 
+Freebsd and Linux have different CPU scheduler, this mainly impacts the process management, specifically with regards to multicore scnarious. As mentioned above FreeBSD uses alot of different kinds of algorithms for CPU scheduling. The similarity between each other is that theya r eboth POSIX systems. If we are to compare default scheduler for both systems Linux uses CFS while FreeBSD uses ULE. Although ULE is similar to CFS it can be instructed to favor interactive processes.
 
+\bibliography{writing1.bib}
 
 \end{document}
