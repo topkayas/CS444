@@ -1,0 +1,112 @@
+\documentclass[letterpaper,10pt,draftclsnofoot,onecolumn]{IEEEtran}
+
+\usepackage{graphicx}                                        
+\usepackage{amssymb}                                         
+\usepackage{amsmath}                                         
+\usepackage{amsthm}                                          
+
+\usepackage{alltt}                                           
+\usepackage{float}
+\usepackage{color}
+\usepackage{url}
+\usepackage{upquote}
+\usepackage{array}
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+\usepackage{pstricks, pst-node}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+
+%random comment
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+
+\def\name{Sinan Topkaya}
+
+%pull in the necessary preamble matter for pygments output
+%\input{pygments.tex}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {cs444 ``OS2'' Homework 2},
+  pdftitle = {CS 444 Homework 2: Project 2},
+  pdfsubject = {CS 444},
+  pdfpagemode = UseNone
+}
+
+\parindent = 0.0 in
+\parskip = 0.2 in
+
+\begin{document}
+
+	\include(gitlog.tex)
+	\begin{titlepage}
+		
+		\begin{center}
+		\bigbreak	
+		\textbf{Project 2}
+		\bigbreak
+		by Sinan Topkaya
+		\smallbreak
+		CS 444 - Spring 2016
+		\end{center}
+		\vfill
+		
+		Abstract: This is a paper that answers project 2 questions on how to build Shortest Seek Time	
+	\end{titlepage}
+
+\section*{Write-up}
+\subsection*{Project 2}
+
+
+\subsection*{SSTF Algorithm}
+
+First of all I will be examining SSTF algorithm, I will be implementing Look algorithm. In LOOK Scheduling the arm goes only as far as final request in each direction, then it reverses direction immediately without going all the way to the end of the disk. Main idea is to sort segments increasinglt on their sizes, schedule on senders one by one. Also on a single sender, we have to select a segment that has shortest transmission time and can arrive on time. Then we have to remove the scheduled segment and repeat above step until no more segments can be scheduled on that sender. We have to schedule the next sender in the same way then stop when all segments are scheduled or when no more bandwidth left.
+
+The idea is that it is goign to be similar to noop so I have definitely had help looking at its code.
+A schedule for each sender Q1, Q2, ...... Qm:
+\begin{itemize}
+	\item Let Qm = NULL where m = 1,2, ..... , Qm
+	\item Let N consists of all remaining segments
+	\item Sort segments increasingly in N on segment size
+	\item For m=1 to M
+	\item 	let t=0
+	\item	foreach segment n in N
+	\item		if an,m =1 and t + sn/bm < dn
+	\item		add segment n to Qm
+	\item 		remove segment n from N
+	\item		let t = t +sn/bm
+	\item Return Q1, Q2, ..... , Qm
+\end{itemize}
+
+\subsection*{Version Control Log}
+\input{gitlog.tex}
+
+\subsubsection*{Reflection}
+	1. I think the main point was to learn about different types of schedulers and how they sort the segments and execute them.\\
+	2. I have watched many sstf and look algorith videos and spent alot of time trying to udnerstand its pseudo codes. Once that was done, the noop shceduler file which is located in the block file was really easy to understand. So I started changign the noob to sstf.\\
+	3. Approaching the problem piece by piece made it much easier. What was really frustrating was that I had to keep building the OS over and over again whenever I wanted to test it, so it took alot of time. I made sure that the scheduler cat the right scheduler and started first printing the output into the console, later I added more code to put that input into a file.\\
+	4. Creating a scheduler really made me understand how the segments work and how the scheduler procceses these segments. I learned that different schedulers have different advantages and disadventages\\
+
+\subsection*{work log}
+\begin{center}
+\begin{tabular}{ |m{2cm}|m{5cm}| }
+\hline
+When & What \\
+4/26/2016 & Started with Project 2, I read more about sstf-look then once that was done I made a copy of the noob scheduler and tried to implement my own sstf.\\
+4/27/2016 & I have created two lists and implemented look dispatch function which executes the next segment in icnreasing order if it cant then it goes to the segment that is lower than the current head position.\\
+4/28/2016 & Everything finally worked well with qemu and Project 2 is completely finished.\\
+\hline
+\end{tabular}
+\end{center}
+\end{document}
