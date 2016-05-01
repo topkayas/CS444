@@ -1,0 +1,70 @@
+\documentclass[letterpaper,10pt,draftclsnofoot,onecolumn]{IEEEtran}
+
+\usepackage{graphicx}                                        
+\usepackage{amssymb}                                         
+\usepackage{amsmath}                                         
+\usepackage{amsthm}                                          
+
+\usepackage{alltt}                                           
+\usepackage{float}
+\usepackage{color}
+\usepackage{url}
+\usepackage{upquote}
+
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+\usepackage{pstricks, pst-node}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+
+%random comment
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+
+\def\name{Sinan Topkaya}
+
+%pull in the necessary preamble matter for pygments output
+%\input{pygments.tex}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {cs444 ``OS2'' Rober Love Chapter 8 12},
+  pdftitle = {CS 444 Week 5: Chapter 8 and 12 Summary},
+  pdfsubject = {CS 444 Week 5},
+  pdfpagemode = UseNone
+}
+
+\parindent = 0.0 in
+\parskip = 0.2 in
+
+\begin{document}
+
+\begin{titlepage}
+	
+	\begin{center}
+	\bigbreak
+	\textbf{Weekly Summaries - Week 5}
+	\bigbreak
+	by Sinan Topkaya
+	\smallbreak
+	CS 444 - Spring 2016
+	\end{center}
+\end{titlepage}
+	
+\section*{Linux Kernel Development, Robert Love}
+\subsection*{Chapter 8 and 12 Summary - Bottom Halves and Deferring Work and Memory Management}
+
+Robert Love, author of Linux Kernel Development (September, 2003) book, assert that interrupt handlers are only a piece of the solution to managing hardware interrupts and that we also have to know Linux Kernel: softirqs, tasklets, and work queues, he also assert that Kernel has a complex way of managing the memory. He proves his claim on chapter 8, by explaining what is wrong with the interrupt handlers and how the bottom half of managing hardware works and he also introduces his readers how Linux Kernel manages memory by introducing the readers various units and categorization of memory. Overall chapters 8 and 12, teaches his readers how to handle problems that might result from using interrupt handlers, and chapter 12 is more about how Linux Kernel manages memory, introducing bytes, pages and zones and warns us about obtaining memory inside the kernel because h states that we have to make sure that allocation process respects certain kernel conditions, such as an inability to block or access the filesystem. The intended audience for these 2 chapters are people that would like to learn about Linux Kernel memory and hardware management, the author, first begins these chapters by explaining what could be a problem when using these, and then he goes on explaining that as long as we make sure we respect some kernel conditions we will not have any trouble with them, and that we should use his detailed code examples to start using them.
+
+\end{document}
+
