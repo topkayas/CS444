@@ -68,6 +68,9 @@
 	\end{titlepage}
 
 \section*{Writing Assignment - I/O Comparison}
+\section*{Intro}
+
+The term I/O is used to describe any program, operation or device that transfers data to or from a computer and to or from a device. Every transfer is an output from once device and an input into another. Devices such as keyboards and mouses are input-only, while CD-ROM is both input and putput device. I/O is implemented differently in FreeBSD, Windows and Linux. This paper will have the information about their similarities and their differance on how they implement I/O.
 
 \section*{Windows}
 
@@ -124,63 +127,28 @@ I/O Processing depends of the type of I/O in Windows. For example asynchronous I
 Another usefull I/O is called the fast I/O. This is a special mechanism that allows I/O system to bypass generating an IRP and isntead go directly to the driver stack to complete an I/O request. Mapped File I/O is an important feature of the I/O system, one that the I/O system and the memory manager produce jointly. Mapped file I/O refers to ability to view a file residing on disk as part of a process vitual memoery. A program therefore can access the file as a large array without buffering data. Scattered/Gather I/O is also supported by windows. This is a high performance I/O and avalaible through ReadFileScatter and Write FileGather functions.
 
 \lstinputlisting{scatter.c}
+\lstinputlisting{gather.c}
 
-\subsection*{FreeBSD}
+\section*{FreeBSD}
 
-Similar to Windows, the threads of a process operate in either user mode or kernel mode. The kernel state includes parameters to the current system call, and have 2 primary strctures; process structure, thread structure. FreeBSD supposers transparent multiprogramming, it does so by context switching, by swithcing between the execution context of the threads within the same or different process. A mechanism is also provided for scheduling the execution of threads, that is for deciding which one to execute next.
+Properties of the I/O System in FreeBSD includes anonymozation of hardware devices, both to user and to the other parts of the kernel. 
 
-Now I will first write about how FreeBSD implements Process then I will talk about how it implements threads and how it deal with scheduling.
+There are 3 main kinds of I/O and they are filesystem, socket interface and character device interface. Filesystem are actual files, they have hierarchical name space, locking, quotas, attribute management and protection. Socket interface deals with netwrok requests and the character device interface, allow user to access to devices in an unstructured way.
 
-\subsubsection*{Processes}
+In FreeBSD device drivers are modules of code dedicated to gandling I/O for a particular piece or kind of hardware, they define a set of operation via well-know entry points.
 
-First I will write about the Process strcuture then I will briefly explain what they are, later I will write more about the state of a process. Every running command starts at least one new process and there are a number of system processes that are run by FreeBSD. Each process is uniquely identifies by a number called PID. Similar to files each process has one owner and group, and the owner and group permissions are used to determine which files and devices the process can open. The command \verb|%ps| allows the user to display a list of the currently running processes, their PIDs, and how much memory they are using, this is the structure of a process. The processes can be scheduled, to specify which process to run first or next.\cite{[2]}
+\subsection{Device Drivers}
 
-Process Structure:
-\begin{enumerate}
-\item Process identification: the PID and the parent PID
-\item Signal Slate: Signals pending delivery and summary of signal actions
-\item Tracing: Process tracing information
-\item Timers: Real-Time timer and CPU-utilization counters
-\end{enumerate}
+Device Driver in FreeBSD are processes first by autoconfiguration and initilization, in this step the devices are probed and software state is initialized, this step is called only once. One this is done the Top Half is where system calls or VM systems are taken care of. The buttom hald(interrupt handlers) is where handlers are taken care of, and last but optional Error Handlig is where crash-dump routine is defined and only called when an unrecoverable error accurs. I/O queuing is means the data movement between Top and Buttom halves of the Kernel, typically the top hald, receives a request from user through system call, then records this request in data structure. After that it places data structure in queue and start the device f necessary. For many devices, they are defined as a byte stream fro example /dev/lp0 is the printer driver, /dev/tty00 terminal driver, /dev/mem memmory driver, there are also some non byte strea devices for example a high speed graphic device. Most of the drivers in FreeBSD has character interfaces except for networks.
 
-Process states inlude NEW, NORMAL and ZOMBIE states. NEW specifies that there is a undergoing process creation, NORMAL specifies that threads will be runnable, sleeping or stopped, and the ZOMBIE state is when the process in undergoing termination. A process may create a new process that is a copy of the original by using the fork system call. The fork call return twice: once in the parent process, where the return value is the process identifier of the child, and once in the child process, where the return value is 0.
 
-The kernel begins by allocating memory for the new process and thread entries. These thread and process entries are initialized in the steps: One part is copied from the parent's corresponding structure, another part is zeroed, and the rest is explicitly initilized. The zeroed fields include recent CPU utilization, wait channel, swap and sleep time, timers, tracing, and pending-signal information. The copied portions include all the privilages and limitation inherited from the parent.
+FreeBSD offers 3 I/O solution when processing I/O operations, which are Polling I/O, which repeatly checks a set of descriptors for avaliable I/O, Nonbloking I/O, which completes immediately with partial results and finally signal-driven I/O, which notifies process when I/O becomes possible.\cite{[2]}
 
-\subsubsection*{Threads}
+\section*{Conclusion}
 
-Thread Structure
-\begin{enumerate}
-\item Scheduling: The thread priority, use-mode scheduling priority, recent CPU utilization and amount of time spent sleeping; the run state of a thread; additional status flags; if the thread is sleeping, the wait channel, the identify of the event for which thread is waiting and a pointer to a string describing the event
-\item TSB: the user- and kernel-mode execution states
-\item Kernel Stack: the per-thread execution stack for the kernel
-\item Machine state: The machine-dependent thread information\cite{[2]} \\
-\end{enumerate}
+Without I/O, computers are useless. And when choosing the OS you want to use, knowing how the I/O functions in that OS is really important. The I/O should be able to make devices reliable, witohut any failures, and it should make them work in an efficient way. Overall and I/O should allow byte or block devices, these devices should be accessed either sequently or randomly. Some devices require contonual monitoring while other generate interrupts when they need service.
 
-The \verb|kthread_add()| is used to create a kernel thread. And the new thread rund in kernle mode only. It is alter then added to the process specified by procp argument. if this thread wanted to be started then \verb|kthread_start()| is used. The structures used by this function includes name of the thread, the function for this thread to run. Later the caller must \verb|sched_add()| to start the kernel. POSIX threads can also be created using FreeBSD.
-
-\subsubsection*{CPU Scheduling}
-
-Kernel switches among threads in an effort to share CPU effectively; this activity is called context switching. Swithing between thread can occir synchronously or asynchronously. Mutex Synchronization can be used for short-term thread sychronization.i
-
-There are number of ways the scheduling can be done, like timeshare thread scheduling, multiprocessor scheduling, adaptive idle and Traditional Timeshare Thread Scheduling.\\
-
-For example multiprocessor scheduling is used when a runnable as a result of wakeup, unlock, thread creation, or other event is called by \verb|sched_pickcpu()| The best CPU to run is chosen(if there are multiple processors.) The whole system is searched for a least loaded CPU, and also checks to see the priority of the threads its running. Using several algorithms it decides the best fit CPU for the work.\cite{[2]}
-
-\subsection*{Answer to the questions}
-\subsection*{Windows}
-\subsubsection*{How is it different compared to Linux? and How is is similar to Linux? and Why?}
-
-Process and Threads: In Windows a process hold the address space, handle table, statistics and at least one thread and it does not inherent parent/child relationship. While Linux process is called a task and although it also hold the informations basic address space, handle table and statistics it does not have to have a thread. Linux does inherent parent.child relationship and uses basic scheduling unit to schedule tasks. Inlinux there are no threads per-se, tasks can act like Windows threads by sharing handle table, PID and address space. Windows uses basic scheduling unit to schedule threads and Fibers are used for cooperative user-mode threads while Pthreats are used for Linux for cooperative user-mode threads
-
-CPU Scheduling: In Windows there are 2 scheduling classes: Real-time and Dynamic, while Linux can have 3 scheduling classes, normal, fixed round robin and fixed fifo. Windows favors higher priorities while threads favor lower priorities. In linux priorities of normal threads decay as they use CPU,  and priorities of interactive threads boost. In Windows prioritie of dynamic threads get boosted on wakeups and thread prioroties are never lowered. In both operating systems the newly created thread starts with a base priority.
-
-Although they have differences between each other, a user can ultimately accomplish the same things. It is a matter of what you need and if possible to know, want to use. We must understand that although the functions work differently they ultimately try to accomplish the same end result. For example \verb|pthread_create| and \verb|CreateThread| are really similar however they have different parameters.
-
-\subsection*{FreeBSD}
-\subsubsection*{How is it didderent compared to Linux? and How is it similar to Linux? and Why?}
-
-Freebsd and Linux have different CPU scheduler, this mainly impacts the process management, specifically with regards to multicore scnarious. As mentioned above FreeBSD uses alot of different kinds of algorithms for CPU scheduling. The similarity between each other is that theya r eboth POSIX systems. If we are to compare default scheduler for both systems Linux uses CFS while FreeBSD uses ULE. Although ULE is similar to CFS it can be instructed to favor interactive processes.
+Overall all of the operating systems(Linux, Windows, FreeBSD) implement I/O in a very similar way, therefore I think the most important thing to think of is the performance reasons. In Windows kernel has a "graphical subsystem" dedicated for graphics processing while linux does not have it. The FreeBSD bootloader can load binary drivers at boot-time. This allows third party manufacturers to distribute binary-only driver modules that can be loaded into any FreeBSD. This is bit different to the Linux because open-source has to be used for Linux. While Microsoft allows third party devices without a problem. Although Windows and Linux are really different in implementation of I/O, they also have alot of similarities. For example in Linux tasklets are non preemtible procedures called with iterrupts enabled, however Windows offers the same feature which is called Windows Deferred Procedure Calls (DPCs).
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibfile.bib}
