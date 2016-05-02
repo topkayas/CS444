@@ -17,6 +17,7 @@
 \usepackage{pstricks, pst-node}
 \usepackage[utf8]{inputenc}
 
+\usepackage{listings}
 \usepackage{geometry}
 \geometry{textheight=8.5in, textwidth=6in}
 
@@ -38,8 +39,8 @@
   colorlinks = true,
   urlcolor = black,
   pdfauthor = {\name},
-  pdfkeywords = {cs444 ``WR1'' Writing 1},
-  pdftitle = {CS 444 Writing 1: Writing1},
+  pdfkeywords = {cs444 ``WR2'' Writing 2},
+  pdftitle = {CS 444 Writing 2: Writing2},
   pdfsubject = {CS 444},
   pdfpagemode = UseNone
 }
@@ -54,7 +55,7 @@
 		
 		\begin{center}
 		\bigbreak	
-		\textbf{Operating System Feature Comparison: Processes and Acheduling}
+		\textbf{Operating System Feature Comperison: I/O}
 		\bigbreak
 		by Sinan Topkaya
 		\smallbreak
@@ -62,65 +63,67 @@
 		\end{center}
 		\vfill
 		
-		Abstract: This paper will examine processes, threads and CPU scheduling for Windows and FreeBSD operating systems. It will mainly be about how these operating systems implement them and how is it different compared to Linux. Specifically, it will answer the questions: How do they differ? How are they the same? and Why do I think these similarities or differences exist?
+		Abstract: This paper will examine I/O and functionalities such as data structions and algorithms. I will be examining how Windows implements them and also how FreeBSD implements them then compare it with how Linux implements them. This paper will mainly focus on different types of devices, I/O scheduling and the like.
 		
 	\end{titlepage}
 
-\section*{Writing Assignment - Processes and Scheduling Comparison}
+\section*{Writing Assignment - I/O Comparison}
 
-\subsection*{Windows}
+\section*{Windows}
 
-Each Windows process is reptesented by an executive process(EPROCESS) structure. EPROCESS con
-tains and points to a number of other related data structures. Likewise if each process has o
-ne or more threads, each of them are repsented by and executive thread(ETHREAD) structure. To understand how Windows implements Processes and Threads we have to understand the structure EPROCESS and ETHREAD. 
+The Windows I/O System consists of many executive components that together manage devices. 
 
-\subsubsection*{Processes}
-
-In this section I will write about how various data strctures involved in process state manipulation and management. Then I will write about how and when those data structures are created and filled out, while creating or terminating processes.\\
-
-The EPROCESS and most of its data structures exist in system address space, except for process environment block(PEB), which exist in the process address space. The reason for that is because PEB contains information accessed by user-mode code. For each process that is executing Win32 program, the Win32 subsystem process (Csrss) maintains a parallel structure called the \verb|CSR_PROCES|, kernel-mode part of the Win32 subsystem(Win32k.sys) maintains a per-process data structure, \verb|W32PROCESS|. The W32PROCESS structure is created the first time a thread calls Windows USER or GDI function implemented in kernel code. Every EPROCESS structure is en capsulated as a process object by the executive object manager, but because processes are not named objects, they are not vissible in WinObj tool. Many other drivers and system components, can choose to create their own data structures to track information on a per-process basis. It is also important to take data structure sizes into considiration.\cite{[1]}
-
-Process Object: \verb|EPROCESS| structure has many key fields. APIs and components are divided into layered modules with their own naming. For example one of the key field(member) of a executive process structure is called Pcb, or in other words process control block. This is a struture of type \verb|KPROCESS|, for kernel process. Although routines store information in EPROCESS, the dispatcher, scheduler and inturrept/time use KPROCESS. Therefore allowing a layer to exist between high-level functionality and its underlying low-level implementation of functions, this also helps prevent unwanted dependencies between layers. Data structure \verb|PEB| lives in the user-mode adress space of the process, it contains information needed by image loader, the heap manager, and other Windows components that need to access it from user mode. The \verb|CSR_PROCESS| structure contains information about processes that is specific to the Windows subsystem. \verb|W32PROCESS| strcuture contains information that the Windows graphics and window management code in kernel needs to maintain state information about GUI processes.Each of these data structures have different process structure and hold important information about the Process.
-
-CreateProcess: Creating a process involves many steps
+I/O System Components
 \begin{enumerate}
-\item Validate parameters; convert Windows subsystem flags and options to their native counterparts; parse, validate, and convert the attribute list to its native counterpart.
-\item Open the image file(.exe) to be executed inside the process.
-\item Create the Windows executive process object
-\item Create the initial thread
-\item Perform post-creation, Windows-subsystem-specific process initialization.
-\item Start execution of the initial thread
-\item In the context of the new process and thread, complete the initialization of the address space and begin execution of the program.
+\item Uniform security and naming across devices to protect shareable resources.
+\item High-performance asynchronous packet-based I/O to allow for the implementation of scalable applications.
+\item Services that allow drivers to be written in a high-level language and eaasily ported between different machine architectures.
+\item Layering and extensibility to allow for the addition of drivers that tranparently modify the bhavior of other drivers or devices, withour requiring any changes to the driver whole behavior or device is modified.
+\item Dynamic loading and unloading of device drivers so that drivers can be loaded on demand and not consume system resources when unneeded
+\item Support for Plug and Play, where the system locates and installs drivers for newly detected hardware, assigns them hardware resources they require, and also allows applications to dis-cover and activate device interfaces
+\item Support for power management so that the system or individual devices can enter low power states.
+\item Support for multiple installable file systems, including FAT, the CD-ROM file sustem(CDFS), the Universal Disk Format (UDF) file system, and the Windows file system (NTFS)
+\item Windows Management Instrumentation (WMI) support and diagnosability so that drivers can be managed and monitored through WMI applications and scripts.\cite{[1]}
 \end{enumerate}
 
+To implement the above features Windows I/O system consists executive components as well as device drivers.
+
+The I/O system includes the hardware abstraction layer(HAL) at the bottom, this insulates drivers from the specifics of the processor and interrupt controller by providing APIs that hide differentces between platforms. We can think of HAL as the bus driver for all the devices. The next layer includes the different Drivers, these drivers are then accessed by the I/O system layer which include, WDM WMI routines, PnP manager, Power manager and I/O manager.
+
+The I/O system layer work closesly with each other.
+
+Windows Management Instrumentation support routines, called the Windows Driver Model(WDM) WMI provider, allow device drivers to indirectly act as providers. I/O manager is the heart of the I/O system. It connects applications and system components to virtual, logical, and physical devices, and it defines the infrastructure that support device drivers. The Pnp manager works closely with the I/O manager and a type of device driver called a bus driver to guide the allocation of hardware resources as well as to detect and respond to the arrival and removal of hardware devices. The power manager also works closely with the I/O manager and the PnP manager to guide the system, as well as individual device drivers, through power-state transitions.
+
+Windows supports a wide range of device driver types and programming environment. These drivers could be user-mode or kernel-mode drivers.
+
+\subsection*{Windows Drivers}
+
+User mode drivers include windows subsystem drivers, that translate device-indipendent graphics requests to printer-specific commands. These commands are then typically forwarded to a kernel-mode port driver such as the universal serial bus(USB) printer port driver. User-Mode Driver Framework(UMDF) is also another user-mode driver that windows supports. These drivers are hardware device drivers that run in user mode. They also communicate to the kernel-mode. 
+
+Kernel-mode drivers include WDM driver, Layered Driver. 
+
+WDM Drivers are device drivers. WDM includes support for Windows power management, Plug and Play, and WMI, and most Plug and Play drivers adhere to WDM. There are 3 types of WDM drivers:\cite{[1]}
+
 \begin{enumerate}
-\item Stage 1: In CreateProcess, the priority class for the new process is specified in the CreationFlags parameter. If no priority class is pecified for the new process, the priority class defaults to Normal. The most important thing to know here is that CreateProcess does not fail jsut because the caller has insufficient privileges to create the process. All windows are associate with the graphical repsentation of a workspace and again if no desktop is specified, the process in associated with the caller current desktop.This stage maninly deals with validating parameters and converting flags and options to their native counterparts.
-\item Stage 2: \verb|NtCreateUserProcess| specifies the Windows image that will run the executable file. But just because the a section object has been succesfully created does not mean that it is a valied Windows image. It could be DLL or a POSIX executable. In case if the file is POSIX executable, the iamge to be run becomes Posix.exe and CreateProcess starts from stage 1. Incase if the file is DLL then the creation fails. Once the executable is found it looks inthe registry to see whether a subkey with the file name and extension exists there. If it does PspAllocateProcess looks for that value named Debugger for that key. If the value is there the image run becomes the string in that value and the process creation starts from Stage 1 again.
-\item Stage 3: At this point NtCrateUserProcess has opened a valid Windows executable, and created a section object to map it into the new process. Iin this stage PspAllcateProcess is being called to run the image. This internal system function involves seeting up the EPROCESS object, creating the initial process address space, initializing the kernel process strcuture(KPROCESS), setting up the PEB and concluding the setup of the process address space.
-\item Stage 4: At this point Windows executive process object is set up. The process still has no threads so it will not be doing anything. Now we have to create or intert a thread by suing PspAllocateThread and PspInsertThread. PspAllocateThread handles the actualy creation and initialization of the executive thread object while PspInsetThread handles the creation of the thread handle and security attributes. Also KeStartThread call can be used to turn the object into a schedulable thread on the system.
-\item Stage 5: Once NtCreateUserProcess returns success, all execitove process and thread objects have been created. At this point Kernel32.dll send a message to the Windows subsystem so that is can set up information. This message includes information on process and thread handles, entries in the creation flags, ID of the process creator, flag indicating whether if this process belongs to a Windows application, UI language information, DLL redirection .local flags and manifest file information. Once this message is recieved b the subsystem, Csrss process structure, thread structure, inserts, count of process are all allocated and inialized.
-\item Stage 6: This isthe stage when the process is environment is determined, resources for its threads to use have been allocated, the process has a thread and the subsystem knows about the new process. Execution of the initial thread starts.
-\item Stage 7: The new thread begins life running the kernel-mode thread startup routine KiThreadStartup. Then PspUserThreadStartup cehcks whether the debugger notifications have already been send for this process, then DbgkCreateThread then waits for a reply from the debugger. After the debugger is notifies, PspUserThreadStartup looks at the result of the initial check on the thread life. After this PspUserThreadStartup checks whether the systemwide cookie in the SharedUserData structure has been set up yet. If is has not, then it generates one based on hash system information. Finally PspUserThreadStartup sets up the initial context to run the image-loader\cite{[1]}\\
+\item Bus drivers manage a logical or physical bus. Examples of buses include PCMCIA, PCI, USB, and IEEE 1394. A bus driver is responsible for detecting and informing the PnP manager of devices attached to the bus it controls as well as managing the power setting of the bus
+\item Function drivers manage a particular type of device. Bus drivers present devices to function drivers via the PnP manager. The function driver is the driver that exports the operational interface of the device to the operating system. In general, it is the driver with the most knowledge about the operation of the device.
+\item Filter drivers logically layer either above or below function driver, augmenting or changing the behavior of a device or another driver. For example, a keyboard capture utility could be implemented with a keyboard filter driver that layers above the keyboard function driver.
 \end{enumerate}
-\subsubsection*{Threads}
 
-Similarly Threads are formed with many Data Structures as well. The executive thread object encapsualtes an ETHREAD structure, whcih in return contains \verb|KTHREAD| strcuture as its first member. Like Processes, ETHREAD strcuture and the other structures it points exist in the system address soace, while the thread environment block(TEB) exists in the process address space. The Windows subsytem process maintains a paralel structure for each thread created, calling \verb|CSR_THREAD|. The data structures have almost the same attributes as the process, for threads.
-
-A life cycle of a Thread:
+Support for an individual piece of hardware is often divided among several drivers, each providing a part of the functionality required to make the device work properly. In addition to WDM bus driver, function driver, and filter driver, hardware support might be split between the layered driver and they are as follows: \cite{[1]}
 
 \begin{enumerate}
-\item CreateThread converts the Windows API parameters to native flags and build native strcuture describing object parameters. \verb|OBJECT_ATTRIBUTES|.
-\item CreateThread builds an attribute list with two entries: client ID and TEB address. This allows those values to be recived once the thread has been created.
-\item NtCreateThreadEx is called to create user-mode context and capture the attribute list. After this PspCreateThread has been called to create a suspended executive thread object.
-\item CreateThread allocates a activation context for the thread used by side-by-side assembly support. It then queries the activation stack to see if it requires activation, and it does so if needed. The stack is is saved in TEB.
-\item CreateThread notifies the Windows subsystem about the new thread, and the subsystem does some setup work for the new thread.
-\item The thread handle and the thread ID are returned to the caller.
-\item Thread is now resumed so that is can be scheduled for execution. \cite{[1]}
+\item Class drivers implement the I/O processing for a particular class of devices, such as disk, keyboard or CD-ROM, where the hardware interfaces have been standarlized, so one driver can serve devices from a wide variety of mufacturers
+\item Miniclass drivers implement I/O processing that is vendor defined for a particular class of devices
+\item Port devices implement the processing of an I/O request specific to a type of I/O port, such as SATA, and are implemented as kernel-mode libraries of functions rather than actual device drivers.
+\item Miniport drivers map a generic I/O request to a type of port into an adapter type, such as a specific netwrok adapter. Miniport drivers are actual device drivers that import the functions supplied by a port driver.
 \end{enumerate}
 
-\subsubsection*{CPU Scheduling}
+I/O Processing depends of the type of I/O in Windows. For example asynchronous I/O allows an application to issue multiple I/O requests and continue executing while the device performs the I/O operation. Synchronous I/O is when the application thread waits while the device performs the data operation and returns a status code when the I/O is complete. When used in their simplest form, Windows ReadFile and WriteFile functions are executed synchronously. Regardless of the type of I/O request, internally I/O operations issued to a driver on behalf of the application are performed asynchronously, that is, once an I/O request has ben initiated, the device driver returns to the I/O system.
 
-Windows CPU scheduling uses priority-based preemptive scheduling, the highest-priority runs next. The scheduler is Dispatcher. Thread runs until blocks, uses time slice and preempted by higher priority thread. If no run-able thread exists then it runs the idle thread. There is always a queue for each priority. Win32 API identifies several priority classes to which a process can belong to such as: \verb|REALTIME_PRIORITY_CLASS|, \verb|HIGH_PRIORITY_CLASS| or \verb|ABOVE_NORMAL_PRIORITY_CLASS|. For example the high priority class will be the first in queue comapred to the above normal priority class. A thread is also given priority class such as \verb|NORMAL| or \verb|BELOW_NORMAL|. In this case the normal priority thread will be the first in queue. The default priority is NORMAL within the class.
+Another usefull I/O is called the fast I/O. This is a special mechanism that allows I/O system to bypass generating an IRP and isntead go directly to the driver stack to complete an I/O request. Mapped File I/O is an important feature of the I/O system, one that the I/O system and the memory manager produce jointly. Mapped file I/O refers to ability to view a file residing on disk as part of a process vitual memoery. A program therefore can access the file as a large array without buffering data. Scattered/Gather I/O is also supported by windows. This is a high performance I/O and avalaible through ReadFileScatter and Write FileGather functions.
+
+\lstinputlisting{scatter.c}
 
 \subsection*{FreeBSD}
 
