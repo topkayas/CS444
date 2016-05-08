@@ -1,0 +1,71 @@
+\documentclass[letterpaper,10pt,draftclsnofoot,onecolumn]{IEEEtran}
+
+\usepackage{graphicx}                                        
+\usepackage{amssymb}                                         
+\usepackage{amsmath}                                         
+\usepackage{amsthm}                                          
+
+\usepackage{alltt}                                           
+\usepackage{float}
+\usepackage{color}
+\usepackage{url}
+\usepackage{upquote}
+
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+\usepackage{pstricks, pst-node}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+
+%random comment
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+
+\def\name{Sinan Topkaya}
+
+%pull in the necessary preamble matter for pygments output
+%\input{pygments.tex}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {cs444 ``OS2'' Rober Love Chapter 15 17},
+  pdftitle = {CS 444 Week 6: Chapter 15 and 17 Summary},
+  pdfsubject = {CS 444 Week 6},
+  pdfpagemode = UseNone
+}
+
+\parindent = 0.0 in
+\parskip = 0.2 in
+
+\begin{document}
+
+\begin{titlepage}
+	
+	\begin{center}
+	\bigbreak
+	\textbf{Weekly Summaries - Week 6}
+	\bigbreak
+	by Sinan Topkaya
+	\smallbreak
+	CS 444 - Spring 2016
+	\end{center}
+\end{titlepage}
+	
+\section*{Linux Kernel Development, Robert Love}
+\subsection*{Chapter 15 and 17 Summary - The Process Address Space and Devices and Modules}
+
+Robert Love, author of Linux Kernel Development (September, 2003) book, on chapter 15 asserts that Linux is a virtual memory-based operating system and therefore that we have to understand how kernel represents the process, and on chapter 17 he explains about Device types, modules, kernel objects and systf components of kernel that are related to device drivers and device management. He proves his claim by giving in depth explanation of process based data structures that represents address space, regions of memory within that space and the regions of memory within that space and how to use them, he also explains the listed four components by explaining more about block devices, character devices and network devices, then he explains how to install and build the modules then how to configure them, he then continues explaining about kernel object data structures and how to use systf, an in-memory virtual filesystem that provides a view of the kernel object hierarchy. The author’s purpose is to teach the reader more about how kernel is a virtual memory-based operating system and also teach more about the 4 components that is related to device drivers and device management in order for the reader to understand more about how and why it is virtual memory based operating system and also in order for the user to use sysfs and add or remove kobjects from it. His intended audience for these 2 chapters are people that would like to learn more about how kernel represents process address space, regions of memory within that space and how kernel creates and destroys the memory regions following the author’s in depth code examples, also people that would like to learn more about kernel components such as device types, modules, kernel objects and sysfs.
+
+
+\end{document}
+
