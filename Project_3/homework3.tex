@@ -1,0 +1,99 @@
+\documentclass[letterpaper,10pt,draftclsnofoot,onecolumn]{IEEEtran}
+
+\usepackage{graphicx}                                        
+\usepackage{amssymb}                                         
+\usepackage{amsmath}                                         
+\usepackage{amsthm}                                          
+
+\usepackage{alltt}                                           
+\usepackage{float}
+\usepackage{color}
+\usepackage{url}
+\usepackage{upquote}
+\usepackage{array}
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+\usepackage{pstricks, pst-node}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+
+%random comment
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+
+\def\name{Sinan Topkaya}
+
+%pull in the necessary preamble matter for pygments output
+%\input{pygments.tex}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {cs444 ``OS2'' Homework 3},
+  pdftitle = {CS 444 Homework 3: Project 3},
+  pdfsubject = {CS 444},
+  pdfpagemode = UseNone
+}
+
+\parindent = 0.0 in
+\parskip = 0.2 in
+
+\begin{document}
+
+	\include(gitlog.tex)
+	\begin{titlepage}
+		
+		\begin{center}
+		\bigbreak	
+		\textbf{Project 3}
+		\bigbreak
+		by Sinan Topkaya
+		\smallbreak
+		CS 444 - Spring 2016
+		\end{center}
+		\vfill
+		
+		Abstract: This is a paper that answers project 3 questions on how to write a RAM Disk device driver for linux	
+	\end{titlepage}
+
+\section*{Write-up}
+\subsection*{Project 3}
+
+
+\subsection*{Algorithm}
+
+Reading the LDD file that was suggested for us, I was able to create a sbd.c file. This invlves almost all the functions from that document. The most important notes were that I was supposed to this as a module, this module then has to be moved to the virtual mashine using scp.
+
+To create my sbd.c file I have used a blog post and changed it according to my needs.
+
+\subsubsection*{Reflection}
+	1. I think the main point was to learn about different types of devices also using crypto API loading modules and using modle parameters..\\
+	2. I have watched many devices videos and read alot of blocks on what a block device needs to do, and once I got what functiosn it needs I figured out.\\
+	3. Approaching the problem piece by piece made it much easier. What was really frustrating was that I had to keep building the OS over and over again whenever I wanted to test it, so it took alot of time.\\
+	4. I learned how to compile and load individual kernel modules, about the crypto API, and how memory devices are handles and the kernel level\\
+
+\subsection*{work log}
+\begin{center}
+\begin{tabular}{ |m{2cm}|m{5cm}| }
+\hline
+When & What \\
+5/13/2016 & Started with Project 3, I read more about LDD then once that was done I started working on the sbd.c file and patch file.\\
+5/15/2016 & I have found a blog post that helped me build my own sdb.\\
+5/16/2016 & Everything finally worked well with qemu and Project 3 I have used scp to write on the file.\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{Version Control Log}
+\input{gitlog.tex}
+
+\end{document}
