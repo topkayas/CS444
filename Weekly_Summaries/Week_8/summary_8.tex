@@ -1,0 +1,70 @@
+\documentclass[letterpaper,10pt,draftclsnofoot,onecolumn]{IEEEtran}
+
+\usepackage{graphicx}                                        
+\usepackage{amssymb}                                         
+\usepackage{amsmath}                                         
+\usepackage{amsthm}                                          
+
+\usepackage{alltt}                                           
+\usepackage{float}
+\usepackage{color}
+\usepackage{url}
+\usepackage{upquote}
+
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+\usepackage{pstricks, pst-node}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+
+%random comment
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+
+\def\name{Sinan Topkaya}
+
+%pull in the necessary preamble matter for pygments output
+%\input{pygments.tex}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {cs444 ``OS2'' Rober Love},
+  pdftitle = {CS 444 Week 8:},
+  pdfsubject = {CS 444 Week 8},
+  pdfpagemode = UseNone
+}
+
+\parindent = 0.0 in
+\parskip = 0.2 in
+
+\begin{document}
+
+\begin{titlepage}
+	
+	\begin{center}
+	\bigbreak
+	\textbf{Weekly Summaries - Week 8}
+	\bigbreak
+	by Sinan Topkaya
+	\smallbreak
+	CS 444 - Spring 2016
+	\end{center}
+\end{titlepage}
+	
+\section*{Linux Kernel Development, Robert Love}
+\subsection*{Chapter Summary}
+
+Robert Love, author of Linux Kernel Development (September, 2003) book, on chapter 11 asset that relative time can be contrasted with absolute time and absolute events with periodic events in kernel when managing time, and on chapter 16 of his book he authors asserts that in Linux kernel it is really important to minimize disk I/O and cache are used to achieve that. He proves his both claims by giving in depth information on how Linux Kernel uses time and timers and how it manages them, he also teaches his readers on how to approach caching and how to write one, he uses a lot of in depth examples on his book to help us better understand the process. The author’s purpose is to teach the reader more about how kernel approaches caches and how it manages timers and time, in both of the chapters he is giving a chronologically written step by step to how Linux Kernel uses caches and how it manages time. His intended audience for these 2 chapters are people that would like to learn more about Linux Kernel, how to write a page cache and page writeback, and how the kernel performs all page I/O through the page cache and this page cache stores data in memory, also the readers that want to know more about the ideal HZ value and what are its pros and cons.
+
+\end{document}
+
