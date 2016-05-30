@@ -1,0 +1,70 @@
+\documentclass[letterpaper,10pt,draftclsnofoot,onecolumn]{IEEEtran}
+
+\usepackage{graphicx}                                        
+\usepackage{amssymb}                                         
+\usepackage{amsmath}                                         
+\usepackage{amsthm}                                          
+
+\usepackage{alltt}                                           
+\usepackage{float}
+\usepackage{color}
+\usepackage{url}
+\usepackage{upquote}
+
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+\usepackage{pstricks, pst-node}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+
+%random comment
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+
+\def\name{Sinan Topkaya}
+
+%pull in the necessary preamble matter for pygments output
+%\input{pygments.tex}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {cs444 ``OS2'' Rober Love},
+  pdftitle = {CS 444 Week 9:},
+  pdfsubject = {CS 444 Week 9},
+  pdfpagemode = UseNone
+}
+
+\parindent = 0.0 in
+\parskip = 0.2 in
+
+\begin{document}
+
+\begin{titlepage}
+	
+	\begin{center}
+	\bigbreak
+	\textbf{Weekly Summaries - Week 9}
+	\bigbreak
+	by Sinan Topkaya
+	\smallbreak
+	CS 444 - Spring 2016
+	\end{center}
+\end{titlepage}
+	
+\section*{Linux Kernel Development, Robert Love}
+\subsection*{Chapter Summary}
+
+Robert Love, author of Linux Kernel Development (September, 2003) book, on chapter 10 assert that Linux Kernel provides great family of sychronization methods and on charpter 13, he asserts that Linux supports a wide range of filesystems, from native filesystem to networked filesystems which are more than 60 filesystems alone in the official kernel. He proves his both claims by giving in depth information on how Linux implements filesystems and how it calls them, and also giving alot of examples on different synchronization methods and how to write them in a best way. The author’s purpose is to teach its readers the best ways to use synchronization methods so that the user can prevent race conditions, ensures the correct synchronization, and correctly run it on mashines with multiple processors and also teach its readers how to create a file system. His intended audience for these 2 chapters are people that would like to learn more about Linux Kernel, how to write filesystems using kernel library and also users that would like to use synchronization methods without any problem.
+
+\end{document}
+
