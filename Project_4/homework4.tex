@@ -1,0 +1,97 @@
+\documentclass[letterpaper,10pt,draftclsnofoot,onecolumn]{IEEEtran}
+
+\usepackage{graphicx}                                        
+\usepackage{amssymb}                                         
+\usepackage{amsmath}                                         
+\usepackage{amsthm}                                          
+
+\usepackage{alltt}                                           
+\usepackage{float}
+\usepackage{color}
+\usepackage{url}
+\usepackage{upquote}
+\usepackage{array}
+\usepackage{balance}
+\usepackage[TABBOTCAP, tight]{subfigure}
+\usepackage{enumitem}
+\usepackage{pstricks, pst-node}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+\geometry{textheight=8.5in, textwidth=6in}
+
+%random comment
+
+\newcommand{\cred}[1]{{\color{red}#1}}
+\newcommand{\cblue}[1]{{\color{blue}#1}}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+
+\def\name{Sinan Topkaya}
+
+%pull in the necessary preamble matter for pygments output
+%\input{pygments.tex}
+
+%% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {cs444 ``OS2'' Homework 4},
+  pdftitle = {CS 444 Homework 4: Project 4},
+  pdfsubject = {CS 444},
+  pdfpagemode = UseNone
+}
+
+\parindent = 0.0 in
+\parskip = 0.2 in
+
+\begin{document}
+
+	\include(gitlog.tex)
+	\begin{titlepage}
+		
+		\begin{center}
+		\bigbreak	
+		\textbf{Project 4}
+		\bigbreak
+		by Sinan Topkaya
+		\smallbreak
+		CS 444 - Spring 2016
+		\end{center}
+		\vfill
+		
+		Abstract: This is the tex file that includes information on project 4	
+	\end{titlepage}
+
+\section*{Write-up}
+\subsection*{Project 4}
+
+
+\subsection*{Algorithm}
+
+I imagined this as a movie thether with seatch of varying sizes which symbolizes main memoery. Some seats are small some are for skinny people while some are large and big for larger sizes. There are many people that symbolizes processes waiting outside the theather, waiting to get seated(job) Best fit algorithm chooses the best seat for accordingly. We make sure we give the right seat to the right person, while maybe skipping alot of seats in between.
+
+\subsubsection*{Reflection}
+	1. I think the main point was to learn about memoery management..\\
+	2. I have watched many devices videos on how to implement best fit algorithm.\\
+	3. The VM took awhile to boot up but I was expecting this.\\
+	4. I learned how to implement best fir and got myself familirized with best fit algorithm\\
+
+\subsection*{work log}
+\begin{center}
+\begin{tabular}{ |m{2cm}|m{5cm}| }
+\hline
+When & What \\
+6/3/2016 & Familirized myself with slob and how it works.\\
+6/2/2016 & Tex file and slob algorith implementation\\
+
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{Version Control Log}
+\input{gitlog.tex}
+
+\end{document}
