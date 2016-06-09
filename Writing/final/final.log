@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2013.9.25)  9 JUN 2016 09:54
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2013.9.25)  9 JUN 2016 10:29
 entering extended mode
  %&-line parsing enabled.
 **final
@@ -808,7 +808,8 @@ File: pdfmark.def 2007/02/07 v6.75r Hyperref definitions for pdfmark specials
 \Fld@listcount=\count138
 ))
 Package hyperref Info: Option `colorlinks' set `true' on input line 47.
- (./final.aux)
+ (./final.aux
+(./writing1.pdf.aux))
 \openout1 = `final.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
@@ -825,8 +826,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
 LaTeX Font Info:    ... okay on input line 52.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 52.
 LaTeX Font Info:    Try loading font information for TS1+cmr on input line 52.
-
-(/usr/share/texmf/tex/latex/base/ts1cmr.fd
+ (/usr/share/texmf/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    ... okay on input line 52.
@@ -893,20 +893,20 @@ LaTeX Font Info:    Try loading font information for OT1+pcr on input line 74.
  (/usr/share/texmf/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-LaTeX Font Info:    Try loading font information for OML+ptm on input line 78.
+LaTeX Font Info:    Try loading font information for OML+ptm on input line 79.
 
 (/usr/share/texmf/tex/latex/psnfss/omlptm.fd
 File: omlptm.fd 
 )
 LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 78.
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 78.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 79.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 79.
 
 (/usr/share/texmf/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 78.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 79.
  [1] [2]
 (/usr/share/texmf/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
@@ -916,70 +916,84 @@ File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
 (/usr/share/texmf/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2004/09/07 1.3 (Carsten Heinz)
-) [3]
-LaTeX Font Info:    Try loading font information for TS1+pcr on input line 140.
+)
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 147.
 
 
-(/usr/share/texmf/tex/latex/psnfss/ts1pcr.fd
-File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
-) [4]
-Underfull \hbox (badness 10000) in paragraph at lines 157--158
+(/usr/share/texmf/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+) [3] [4]
+Underfull \hbox (badness 10000) in paragraph at lines 165--166
 
  []
 
 [5]
-Overfull \hbox (4.10591pt too wide) in paragraph at lines 170--175
+Overfull \hbox (4.10591pt too wide) in paragraph at lines 178--183
 \OT1/ptm/m/n/10 iden-ti-fies sev-eral pri-or-ity classes to which a pro-cess ca
 n be-long to such as: []\OT1/pcr/m/n/10 REALTIME_PRIORITY_CLASS\OT1/ptm/m/n/10 
 ,
  []
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 187--188
+Underfull \hbox (badness 10000) in paragraph at lines 195--196
 
  []
 
 [7] [8]
-Overfull \hbox (22.38464pt too wide) in paragraph at lines 218--219
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-] 
+Underfull \hbox (badness 10000) in paragraph at lines 228--229
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
  []
 
 
-Overfull \hbox (4.38446pt too wide) in paragraph at lines 220--221
+Overfull \hbox (4.38446pt too wide) in paragraph at lines 230--231
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[9] [10] (./scatter.c
+[9] [10] [11] (./scatter.c
 Overfull \hbox (16.38458pt too wide) in paragraph at lines 1--2
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-[][][][][][][] 
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 ) (./gather.c
 Overfull \hbox (10.38452pt too wide) in paragraph at lines 1--2
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-[][][][] 
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[11]) [12]
+)
+LaTeX Font Info:    Try loading font information for U+msa on input line 271.
+ (/usr/share/texmf/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 271.
 
-LaTeX Warning: Citation `linux' on page 13 undefined on input line 287.
+(/usr/share/texmf/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2002/01/19 v2.2g AMS font definitions
+) [12] [13]
 
-[13] [14] [15] [16] (./final.bbl [17]) [18] (./final.aux)
+LaTeX Warning: Citation `linux' on page 14 undefined on input line 299.
+
+[14] [15] [16] [17] [18] [19] [20]
+** WARNING: Ignoring useless \section in Appendix (line 370).
+[21]
+\openout2 = `writing1.pdf.aux'.
+
+
+No file writing1.pdf.tex.
+(./final.bbl) [22
+
+
+] (./final.aux (./writing1.pdf.aux))
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 9506 strings out of 256217
- 127502 string characters out of 1917095
- 218623 words of memory out of 1500000
- 12660 multiletter control sequences out of 10000+200000
- 25865 words of font info for 57 fonts, out of 1200000 for 2000
+ 9259 strings out of 256217
+ 124922 string characters out of 1917095
+ 221623 words of memory out of 1500000
+ 12384 multiletter control sequences out of 10000+200000
+ 30694 words of font info for 77 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 33i,7n,58p,1264b,1841s stack positions out of 5000i,500n,6000p,200000b,15000s
+ 33i,7n,58p,1264b,1324s stack positions out of 5000i,500n,6000p,200000b,15000s
 
-Output written on final.dvi (19 pages, 109728 bytes).
+Output written on final.dvi (23 pages, 121284 bytes).

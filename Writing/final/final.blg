@@ -1,5 +1,6 @@
 This is BibTeX, Version 0.99c (Web2C 7.5.6)
 The top-level auxiliary file: final.aux
+A level-1 auxiliary file: writing1.pdf.aux
 The style file: IEEEtran.bst
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Database file #1: bibfile.bib.bib
@@ -11,7 +12,7 @@ Warning--I didn't find a database entry for "linux"
 Done.
 You've used 2 entries,
             4087 wiz_defined-function locations,
-            832 strings with 7526 characters,
+            833 strings with 7542 characters,
 and the built_in function-call counts, 864 in all, are:
 = -- 49
 > -- 18
