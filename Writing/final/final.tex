@@ -1,9 +1,10 @@
 \documentclass[letterpaper,10pt,draftclsnofoot,onecolumn]{IEEEtran}
 
-\usepackage{graphicx}                                        
+%\usepackage{graphicx}                                        
 \usepackage{amssymb}                                         
 \usepackage{amsmath}                                         
 \usepackage{amsthm}                                          
+\usepackage[pdftex]{graphicx}
 
 \usepackage{alltt}                                           
 \usepackage{float}
@@ -366,9 +367,10 @@ To support large space address spaces, mapped files and shared memory freeBsd ca
 The kernel often does allocations of memory that are needed for only the duration of a single system call. In a user process, such short-term memory would be allocated on the run-time stack. Because the kernel has a limited run-time stack, it is not feasible to allocate even moderate-sized blocks of memory on it. Consequently, such memory must be allocated through a more dynamic mechanism. For example, when the system must translate a pathname, it must allocate a 1-Kbyte buffer to hold the name. Other blocks of memory must be more persistent than a single system call, and thus could not be allocated on the stack even if there was space. An example is protocol-control blocks that remain throughout the duration of a network connection.\cite{[2]}
 Both Linux and Windows have common features in between them, for example both operating systems use hardware abstraction later that is not system dependents so therefore the kernel can be coded independently, also if pages share same copy of the page is used between the processes. In both operating systems a file can be mapped onto memory, which then can be used for read/write instructions. For the above reasons both operating systems are actually really similar however they do use different functions and libraries and sometime different algorithms but to do the exactly the same thing. According to a forum from freebsd the memory allocation performance for FreeBSD is little bit better. Even if they both use the POSIX standards BSD uses almost half the memory because of this. This is usually caused by locks.
 
+
 \appendix
 \section{Processes, threads and CPU Sheduling Comparison}\label{AppendixA}
-\include{writing1.tex}
+\includegraphics{writing1.pdf}
 
 
 \bibliographystyle{IEEEtran}
