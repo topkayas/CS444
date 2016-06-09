@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2013.9.25)  9 JUN 2016 10:29
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2013.9.25)  9 JUN 2016 10:34
 entering extended mode
  %&-line parsing enabled.
 **final
@@ -809,7 +809,7 @@ File: pdfmark.def 2007/02/07 v6.75r Hyperref definitions for pdfmark specials
 ))
 Package hyperref Info: Option `colorlinks' set `true' on input line 47.
  (./final.aux
-(./writing1.pdf.aux))
+(./writing1.tex.aux))
 \openout1 = `final.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
@@ -975,14 +975,14 @@ LaTeX Warning: Citation `linux' on page 14 undefined on input line 299.
 [14] [15] [16] [17] [18] [19] [20]
 ** WARNING: Ignoring useless \section in Appendix (line 370).
 [21]
-\openout2 = `writing1.pdf.aux'.
+\openout2 = `writing1.tex.aux'.
 
 
-No file writing1.pdf.tex.
+No file writing1.tex.tex.
 (./final.bbl) [22
 
 
-] (./final.aux (./writing1.pdf.aux))
+] (./final.aux (./writing1.tex.aux))
 
 LaTeX Warning: There were undefined references.
 
