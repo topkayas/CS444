@@ -1,10 +1,13 @@
 \documentclass[letterpaper,10pt,draftclsnofoot,onecolumn]{IEEEtran}
 
-%\usepackage{graphicx}                                        
+\usepackage{graphicx}                                        
 \usepackage{amssymb}                                         
 \usepackage{amsmath}                                         
 \usepackage{amsthm}                                          
-\usepackage[pdftex]{graphicx}
+%\usepackage[pdftex]{graphicx}
+
+\usepackage{pdfpages}
+\usepackage{array}
 
 \usepackage{alltt}                                           
 \usepackage{float}
@@ -370,7 +373,8 @@ Both Linux and Windows have common features in between them, for example both op
 
 \appendix
 \section{Processes, threads and CPU Sheduling Comparison}\label{AppendixA}
-\includegraphics{writing1.pdf}
+%\setboolean{@twoside}{false}
+\includepdf[pages=-]{writing1.pdf}
 
 
 \bibliographystyle{IEEEtran}
