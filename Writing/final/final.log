@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2013.9.25)  9 JUN 2016 11:03
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2013.9.25)  9 JUN 2016 11:36
 entering extended mode
  %&-line parsing enabled.
 **final
@@ -1043,18 +1043,34 @@ Underfull \hbox (badness 10000) in paragraph at lines 485--486
 
  []
 
-[6] (./final.bbl) [7] (./final.aux)
+[6] [7]
+** WARNING: Ignoring useless \section in Appendix (line 505).
+[0] [1] [2] [3] (./scatter.c
+Overfull \hbox (16.38458pt too wide) in paragraph at lines 1--2
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+) (./gather.c
+Overfull \hbox (10.38452pt too wide) in paragraph at lines 1--2
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+) [4] [5] [6]
+** WARNING: Ignoring useless \section in Appendix (line 607).
+[0] [1] [2] [3] [4] [5]
+** WARNING: Ignoring useless \section in Appendix (line 699).
+[0] [1] [2] [3] (./final.bbl) [4] (./final.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 9919 strings out of 256217
- 135181 string characters out of 1917095
+ 9927 strings out of 256217
+ 135277 string characters out of 1917095
  235082 words of memory out of 1500000
- 13025 multiletter control sequences out of 10000+200000
+ 13029 multiletter control sequences out of 10000+200000
  30694 words of font info for 77 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
  33i,7n,58p,1264b,1330s stack positions out of 5000i,500n,6000p,200000b,15000s
 
-Output written on final.dvi (30 pages, 155108 bytes).
+Output written on final.dvi (48 pages, 219516 bytes).

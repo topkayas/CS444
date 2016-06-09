@@ -501,6 +501,267 @@ Although they have differences between each other, a user can ultimately accompl
 
 Freebsd and Linux have different CPU scheduler, this mainly impacts the process management, specifically with regards to multicore scnarious. As mentioned above FreeBSD uses alot of different kinds of algorithms for CPU scheduling. The similarity between each other is that theya r eboth POSIX systems. If we are to compare default scheduler for both systems Linux uses CFS while FreeBSD uses ULE. Although ULE is similar to CFS it can be instructed to favor interactive processes.
 
+\newpage
+\section{I/O}\label{AppendixB}
+
+\begin{titlepage}
+		
+		\begin{center}
+		\bigbreak	
+		\textbf{Operating System Feature Comperison: I/O}
+		\bigbreak
+		by Sinan Topkaya
+		\smallbreak
+		CS 444 - Spring 2016
+		\end{center}
+		\vfill
+		
+		Abstract: This paper will examine I/O and functionalities such as data structions and algorithms. I will be examining how Windows implements them and also how FreeBSD implements them then compare it with how Linux implements them. This paper will mainly focus on different types of devices, I/O scheduling and the like.
+		
+	\end{titlepage}
+
+\section*{Writing Assignment - I/O Comparison}
+\section*{Intro}
+
+The term I/O is used to describe any program, operation or device that transfers data to or from a computer and to or from a device. Every transfer is an output from once device and an input into another. Devices such as keyboards and mouses are input-only, while CD-ROM is both input and putput device. I/O is implemented differently in FreeBSD, Windows and Linux. This paper will have the information about their similarities and their differance on how they implement I/O.
+
+\section*{Windows}
+
+The Windows I/O System consists of many executive components that together manage devices. 
+
+I/O System Components
+\begin{enumerate}
+\item Uniform security and naming across devices to protect shareable resources.
+\item High-performance asynchronous packet-based I/O to allow for the implementation of scalable applications.
+\item Services that allow drivers to be written in a high-level language and eaasily ported between different machine architectures.
+\item Layering and extensibility to allow for the addition of drivers that tranparently modify the bhavior of other drivers or devices, withour requiring any changes to the driver whole behavior or device is modified.
+\item Dynamic loading and unloading of device drivers so that drivers can be loaded on demand and not consume system resources when unneeded
+\item Support for Plug and Play, where the system locates and installs drivers for newly detected hardware, assigns them hardware resources they require, and also allows applications to dis-cover and activate device interfaces
+\item Support for power management so that the system or individual devices can enter low power states.
+\item Support for multiple installable file systems, including FAT, the CD-ROM file sustem(CDFS), the Universal Disk Format (UDF) file system, and the Windows file system (NTFS)
+\item Windows Management Instrumentation (WMI) support and diagnosability so that drivers can be managed and monitored through WMI applications and scripts.\cite{[1]}
+\end{enumerate}
+
+To implement the above features Windows I/O system consists executive components as well as device drivers.
+
+The I/O system includes the hardware abstraction layer(HAL) at the bottom, this insulates drivers from the specifics of the processor and interrupt controller by providing APIs that hide differentces between platforms. We can think of HAL as the bus driver for all the devices. The next layer includes the different Drivers, these drivers are then accessed by the I/O system layer which include, WDM WMI routines, PnP manager, Power manager and I/O manager.
+
+The I/O system layer work closesly with each other.
+
+Windows Management Instrumentation support routines, called the Windows Driver Model(WDM) WMI provider, allow device drivers to indirectly act as providers. I/O manager is the heart of the I/O system. It connects applications and system components to virtual, logical, and physical devices, and it defines the infrastructure that support device drivers. The Pnp manager works closely with the I/O manager and a type of device driver called a bus driver to guide the allocation of hardware resources as well as to detect and respond to the arrival and removal of hardware devices. The power manager also works closely with the I/O manager and the PnP manager to guide the system, as well as individual device drivers, through power-state transitions.
+
+Windows supports a wide range of device driver types and programming environment. These drivers could be user-mode or kernel-mode drivers.
+
+\subsection*{Windows Drivers}
+
+User mode drivers include windows subsystem drivers, that translate device-indipendent graphics requests to printer-specific commands. These commands are then typically forwarded to a kernel-mode port driver such as the universal serial bus(USB) printer port driver. User-Mode Driver Framework(UMDF) is also another user-mode driver that windows supports. These drivers are hardware device drivers that run in user mode. They also communicate to the kernel-mode. 
+
+Kernel-mode drivers include WDM driver, Layered Driver. 
+
+WDM Drivers are device drivers. WDM includes support for Windows power management, Plug and Play, and WMI, and most Plug and Play drivers adhere to WDM. There are 3 types of WDM drivers:\cite{[1]}
+
+\begin{enumerate}
+\item Bus drivers manage a logical or physical bus. Examples of buses include PCMCIA, PCI, USB, and IEEE 1394. A bus driver is responsible for detecting and informing the PnP manager of devices attached to the bus it controls as well as managing the power setting of the bus
+\item Function drivers manage a particular type of device. Bus drivers present devices to function drivers via the PnP manager. The function driver is the driver that exports the operational interface of the device to the operating system. In general, it is the driver with the most knowledge about the operation of the device.
+\item Filter drivers logically layer either above or below function driver, augmenting or changing the behavior of a device or another driver. For example, a keyboard capture utility could be implemented with a keyboard filter driver that layers above the keyboard function driver.
+\end{enumerate}
+
+Support for an individual piece of hardware is often divided among several drivers, each providing a part of the functionality required to make the device work properly. In addition to WDM bus driver, function driver, and filter driver, hardware support might be split between the layered driver and they are as follows: \cite{[1]}
+
+\begin{enumerate}
+\item Class drivers implement the I/O processing for a particular class of devices, such as disk, keyboard or CD-ROM, where the hardware interfaces have been standarlized, so one driver can serve devices from a wide variety of mufacturers
+\item Miniclass drivers implement I/O processing that is vendor defined for a particular class of devices
+\item Port devices implement the processing of an I/O request specific to a type of I/O port, such as SATA, and are implemented as kernel-mode libraries of functions rather than actual device drivers.
+\item Miniport drivers map a generic I/O request to a type of port into an adapter type, such as a specific netwrok adapter. Miniport drivers are actual device drivers that import the functions supplied by a port driver.
+\end{enumerate}
+
+I/O Processing depends of the type of I/O in Windows. For example asynchronous I/O allows an application to issue multiple I/O requests and continue executing while the device performs the I/O operation. Synchronous I/O is when the application thread waits while the device performs the data operation and returns a status code when the I/O is complete. When used in their simplest form, Windows ReadFile and WriteFile functions are executed synchronously. Regardless of the type of I/O request, internally I/O operations issued to a driver on behalf of the application are performed asynchronously, that is, once an I/O request has ben initiated, the device driver returns to the I/O system.
+
+Another usefull I/O is called the fast I/O. This is a special mechanism that allows I/O system to bypass generating an IRP and isntead go directly to the driver stack to complete an I/O request. Mapped File I/O is an important feature of the I/O system, one that the I/O system and the memory manager produce jointly. Mapped file I/O refers to ability to view a file residing on disk as part of a process vitual memoery. A program therefore can access the file as a large array without buffering data. Scattered/Gather I/O is also supported by windows. This is a high performance I/O and avalaible through ReadFileScatter and Write FileGather functions.
+
+\lstinputlisting{scatter.c}
+\lstinputlisting{gather.c}
+
+\section*{FreeBSD}
+
+Properties of the I/O System in FreeBSD includes anonymozation of hardware devices, both to user and to the other parts of the kernel. 
+
+There are 3 main kinds of I/O and they are filesystem, socket interface and character device interface. Filesystem are actual files, they have hierarchical name space, locking, quotas, attribute management and protection. Socket interface deals with netwrok requests and the character device interface, allow user to access to devices in an unstructured way.
+
+In FreeBSD device drivers are modules of code dedicated to gandling I/O for a particular piece or kind of hardware, they define a set of operation via well-know entry points.
+
+\subsection{Device Drivers}
+
+Device Driver in FreeBSD are processes first by autoconfiguration and initilization, in this step the devices are probed and software state is initialized, this step is called only once. One this is done the Top Half is where system calls or VM systems are taken care of. The buttom hald(interrupt handlers) is where handlers are taken care of, and last but optional Error Handlig is where crash-dump routine is defined and only called when an unrecoverable error accurs. I/O queuing is means the data movement between Top and Buttom halves of the Kernel, typically the top hald, receives a request from user through system call, then records this request in data structure. After that it places data structure in queue and start the device f necessary. For many devices, they are defined as a byte stream fro example /dev/lp0 is the printer driver, /dev/tty00 terminal driver, /dev/mem memmory driver, there are also some non byte strea devices for example a high speed graphic device. Most of the drivers in FreeBSD has character interfaces except for networks.
+
+
+FreeBSD offers 3 I/O solution when processing I/O operations, which are Polling I/O, which repeatly checks a set of descriptors for avaliable I/O, Nonbloking I/O, which completes immediately with partial results and finally signal-driven I/O, which notifies process when I/O becomes possible.\cite{[2]}
+
+\section*{Conclusion}
+
+Without I/O, computers are useless. And when choosing the OS you want to use, knowing how the I/O functions in that OS is really important. The I/O should be able to make devices reliable, witohut any failures, and it should make them work in an efficient way. Overall and I/O should allow byte or block devices, these devices should be accessed either sequently or randomly. Some devices require contonual monitoring while other generate interrupts when they need service.
+
+Overall all of the operating systems(Linux, Windows, FreeBSD) implement I/O in a very similar way, therefore I think the most important thing to think of is the performance reasons. In Windows kernel has a "graphical subsystem" dedicated for graphics processing while linux does not have it. The FreeBSD bootloader can load binary drivers at boot-time. This allows third party manufacturers to distribute binary-only driver modules that can be loaded into any FreeBSD. This is bit different to the Linux because open-source has to be used for Linux. While Microsoft allows third party devices without a problem. Although Windows and Linux are really different in implementation of I/O, they also have alot of similarities. For example in Linux tasklets are non preemtible procedures called with iterrupts enabled, however Windows offers the same feature which is called Windows Deferred Procedure Calls (DPCs).
+
+\newpage
+\section{Interrupts}\label{AppendixC}
+
+\begin{titlepage}
+		
+		\begin{center}
+		\bigbreak	
+		\textbf{Operating System Feature Comperison: I/O}
+		\bigbreak
+		by Sinan Topkaya
+		\smallbreak
+		CS 444 - Spring 2016
+		\end{center}
+		\vfill
+		
+		Abstract: This paper will examine nterrupts and functionalities. I will be examining how Windows implements them and also how FreeBSD implements them then compare it with how Linux implements them. 
+		
+	\end{titlepage}
+
+\section*{Writing Assignment - Interrupts Comparison}
+\section*{Intro}
+
+Interrupts are operating system condition that divert the processor to code outside the normal flow of control, either hardware or software can detect them. Although very similar Linux, Windows and FreeBSD implements them little bit differently. 
+
+\section*{Windows}
+
+In Windows trap dispacthing handles the interrupts. The term trap refers to a processor mechanism for camturing an executing thread when an exception or an interrupt occurs and transferring control to a fixed location in the operating system. The processor transfers control to a trap handler, which is a function specific to a particular interrupt or exception.\cite{[1]}
+
+An interrupt is an event that can pccur at any time meaning that it is unrelated to what the processor is executing. They are usually generated by I/O devices, processor clocks, or timers, and they can be enabled or disabled. As mentioned above either hardware or software can generate interrupts.
+
+When a hardware exception is generated, the processor records enough machine state on the kernel stack of the thread that is interrupted to return to that point in the control flow and continue execution as if nothing had happened. If the thread was executing in user mode, Windows switches to the thread's kernel-mode stack then creates a trap frame on the stack of the interrupted thread and stores the state of the thread.\cite{[1]}
+
+The kernel handles software interrupts either as part of a hardware interrupt hndling or when a thread invokes kernel functions related to the software interrupt.
+
+\section*{Interrupt Dispatching - Windows}
+
+Hardware generated interrupts are usually originated from I/O devices that must notify processor when they need service. These devices allow the OS to use the processor in the most efficient way by overlapping central processig with I/O operations. Once the device is finsihed executing, it interrupts the processor for service. For example printers, kerboards, and network cards work this way. System software may also generate interrupts, for example the kernel can issue a software interrupt to initiate thread dispatching and to asynchronously break into the execution of a thread.
+
+The kernel installs interrupt trap handlers to respond to device interrupts. Interrupt trap handlers transfer control either to an external routine (the ISR) that handles the interrupt or to an internal kernel routine that responds to the interrupt. Device drivers supply ISRs to service device interrupts, and the kernel provides interrupt-handling routines for other types of interrupts.\cite{[1]}
+
+\subsection*{Hardware Interrupt Processing}
+
+I/O interrupts come into one of the lines on an interrupt controller. This controller in turn inrrupts the processor. One it is inturrpted, it queries the controller to get interrupt request. This controller then transfers the request to a interrupt number, and this numer is then used as an index into a structure called interrupt dispatch table. 
+
+\subsection*{x86 Interrupt Controllers}
+
+In x86 systems Programmable Interrupt Controllers are used. APICs support the PIC compability mode with 15 interrupts and delivery of interrupts to only the promary processor. And it usually consists of several components such as: I/O APIC that receives interrupts from devices, local APICs that receive interrupts from the I/O APIC on the bus ad that interrupt the CPU they are associated with, and an i8259A comptible interrupt controller that translates its input into PIC signals. A computer that runs Windows OS might have multiple I/O APICs on the system motherboards typically have a piece of core logic that sits between them and the processors. 
+
+This logic is responsible for implementing interrupt routing algorithms that both balance the device interrupt load across processors and attempt to take advantage of locality, delivering device interrupts to the same processorthat has just fielded a previous interrupt of the same type.\cite{[1]}
+
+\subsection*{x64 Interrupt Controllers}
+
+Because the x64 architecture is compatible with x86 operating systems, x64 systems must provide the same interrupt controllers as the x86. A significant difference, however, is that the x64 versions of Windows will not run on systems that do not have an APIC because they use the APIC for interupt control.\cite{[1]}
+
+\subsection*{IA64 Interrupt Controllers}
+
+The IA64 architecture relies on the Streamlined Advanced Programmable Interrupt Controller (SAPIC), which is an evolution of the APIC. Even if load balancing and routing are present in the firmware, Windows does not take advantage of it; instead, it statically assigns interrupts to processors in around-robin manner.\cite{[1]}
+
+\subsection*{Software Interrupt Request Levels}
+
+Windows imposes its own interrupt priority schema known as Interrupt request levels. x86 lists from 0-31, x64 and IA64 from 0-15. Higher the number the higher the priority. Interrupts are services in priority order and a higher-priority interrupt preempts the servicing of a low-priority interrupt. When a high-priority interruot occurs, the processor saves the interrupted threads state and invokes the trap dispatchers associated with the interupt. Trap dispatcher then raises the Interrupt Request Queue and calls the interrups service routine. After the service routine executes, the interruot dispatcher lowers the processors IRQL to where it was before the interrupt accoured and then loads the saved machine state. The interrupted thread resumes executing where it left off.
+
+\subsection*{Software Interrupts}
+
+Software Interrupts have variety of tasks including, initiating thread dispatching, non-time-critical interrupt processing, handling timer expiration, asynchronously executing a procedure in the context of a particular thread and supporting asynchronous I/O operations.
+
+\subsection*{Dispatch or Deferred Procesdure Call Interrupts}
+
+When a thread can no longer continue executing, perhaps because it has terminated or because it voluntarily enters a wait state, the kernel calls the dispatcher directly to effect an immediate context switch. Sometimes, however, the kernel detects that rescheduling should occur when it is deep within many layers of code. In this situation, the kernel requests dispatching but defers its occurrence until it completes its current activity. Using a DPC software interrupt is a convenient way to achieve this delay
+
+In addition to thread dispatching, the kernel also processes deferred procedure calls (DPCs) at this IRQL. A DPC is a function that performs a system task—a task that is less time-critical than the current one. The functions are called deferred because they might not execute immediately. DPCs provide the operating system with the capability to generate an interrupt and execute a system function in kernel mode. The kernel uses DPCs to process timer expiration and to reschedule the processor after a thread’s quantum expires. Device drivers use DPCs to process interrupts. To provide timely service for hardware interrupts, Windows with the cooperation of device drivers—attempts to keep the IRQL below device IRQL levels. One way that this goal is achieved is for device driver ISRs to perform the minimal work necessary to acknowledge their device, save volatile interrupt state, and defer data transfer or other less time-critical interrupt processing activity for execution in a DPC at DPC/dispatch IRQL.
+
+A DPC is represented by a DPC object, a kernel control object that is not visible to user-mode programs but is visible to device drivers and other system code. The most important piece of information the DPC object contains is the address of the system function that the kernel will call when it processes the DPC interrupt. DPC routines that are waiting to execute are stored in kernel managed queues, one per processor, called DPC queues. To request a DPC, system code calls the kernel to initialize a DPC object and then places it in a DPC queue.\cite{[1]}
+
+%\lstinputlisting{scatter.c}
+%\lstinputlisting{gather.c}
+
+\section*{FreeBSD}
+
+FreeBSD deals with interrupt handlers by giving them their own thread context. Providing a context for interrupt handlers allows them to block on locks. To help avoid latency, however, interrupt threads run at real-time kernel priority. Thus, interrupt handlers should not execute for very long to avoid starving other kernel threads. Since multiple handlers may share an interupt thread, interrupt handlers should not sleep or use a sleepable lock to avoid starving another handler.
+
+The interrupt threads are aslo referred as heavyweight interrupt threads. They are called like this because swithcing to an interrupt thread involves a full context switch. In the initial implementation, the kernel was not preemptive and thus interrupts that interrupted a kernel thread would have to wait until the kernel thread blocked or returned to user before they would have to run. Not all interrupt handlers execute in a thread context. Instead, some handlers execute directly in primary interrupt context. These interrupt handlers are currently misnamed “fast” interrupt handlers since the \begin{verbatim}INTR_FAST\end{verbatim} flag used in earlier versions of the kernel is used to mark these handlers. The only interrupts which currently use these types of interrupt handlers are clock interrupts and serial I/O device interrupts. Since these handlers do not have their own context, they may not acquire blocking locks and thus may only use spin mutexes.\cite{[2]}
+
+Finally, there is one optional optimization that can be added in MD code called lightweight context switches. Since an interrupt thread executes in a kernel context, it can borrow the vmspace of any process. Thus, in a lightweight context switch, the switch to the interrupt thread does not switch vmspaces but borrows the vmspace of the interrupted thread. In order to ensure that the vmspace of the interrupted thread does not disappear out from under us, the interrupted thread is not allowed to execute until the interrupt thread is no longer borrowing its vmspace. This can happen when the interrupt thread either blocks or finishes. If an interrupt thread blocks, then it will use its own context when it is made runnable again. Thus, it can release the interrupted thread.
+
+\section*{Conclusion}
+
+Windows is very different compared to Linux and FreeBSD and personally think that it handles interrupts better. Although the documentation is long and involves alot of information. I thought that it makes mroe sense. Windows is different comapred to the other OSs becauase it has different arhitecture(x86 x64, IA64). Other then that Windows is as mentioned before designed very idfferently compared to Linux but they perform similar functions. As we know Kernel mode is made of 4 distinct levels and the fourth layer deals with process dispatching, scheduling, creation and termination as well as signal handling. This layer deals with interrupts and traps while in Windows there are 5 levels and the 5th layer deals with the system services.
+
+FreeBSD is very similar to Linux it also uses Interupt Controller and that uses different algorithms to efficiently use the CPU. Like Windows it uses PIC or APIC. What is interresting with FREEBSD is that handling is often divided into two parts, and the second part is performed by a lower priority software interrupt thread. And some interrupts that have to be very fast run entirely in interrupt context.
+
+
+\newpage{}
+\section{Memmory Management}\label{AppendixD}
+
+\begin{titlepage}
+		
+		\begin{center}
+		\bigbreak	
+		\textbf{Operating System Feature Comperison: Memory Management}
+		\bigbreak
+		by Sinan Topkaya
+		\smallbreak
+		CS 444 - Spring 2016
+		\end{center}
+		\vfill
+		
+		Abstract: This paper will examine how Windows and FreeBSD implements memeory management, later on there will be information about the comparison of these operating systems to Linux. 
+		
+	\end{titlepage}
+
+\section*{Writing Assignment - Memory Manager Comparison}
+\section*{Intro}
+
+Memory management is the act of managing computer memoery at the system level. The essential requirement of memory management is to provide way to dynamically allocate portions of memory to programs at their request, and free it for reuse when no longer needed. This paper will examine how Windows and FreeBSD achieves this. 
+
+\section*{Windows}
+
+Memory manager is part of the Windows executive and therefore exists in the file Ntoskrnl.exe. In Windows memeoery manager consists of various components such as, set of executive systems, trap handlers, balance set manager, process/stack swapper, modified, mapped page writer,
+segment and the zero page threads.\cite{[1]}
+
+\section*{Memory Usage}
+
+The memory and Process performance counter objects provide access to most of the dtails about system and process memory utilization. This can be viwed through Windows Task Manager. This shows the information on pysical memory usable by Windows, cached memory, memory that is freem paged memory, nonpages memoery.
+
+Like other Windows executive services, the memory management services allow their caller to
+supply a process handle indicating the particular process whose virtual memory is to be manipulated. For example, if a process creates a child process, by default it has the right to manipulate the child process’s virtual memory. Thereafter, the parent process can allocate, deallocate, read, and write memory on behalf of the child process by calling virtual memory services and passing a handle to the child process as an argument. This feature is used by subsystems to manage the memory of their client processes. It is also essential for implementing debuggers because debuggers must be able to read and write to the memory of the process being debugged.
+
+Most of these services are exposed through the Windows API, it consists of three groups of functionsm heap function which is used for allocations smalled than a page, virtual memory functionsm which operate page granularity and memory mapped file function, like createfilemapping, createafilemappingnuma, mapviewoffile, etc.. functions.
+
+\section*{Large and Small Pages}
+
+The virtual address space is divided into units called pages. That is because the hardware memory management unit translates virtual to physical addresses at the granularity of a page. Hence a page is the smallest unit of protection at the hardware level. The processors on which Windows runs support two page sizes, called small and large. 
+
+Pages in a process virtual address space are free, reserved, commited, or shareable. Commited and shareable pages are pages that, when accessed, ultimately translate to valid pages in physical memory. Commited cannot be shared woth other processes, while shareable pages can be. In general, it’s better to let the memory manager decide which pages remain in physical memory. However, there might be special circumstances where it might be necessary for an application or device driver to lock pages in physical memory. Pages can be locked in memory in the way, either with windows applications or device drivers.
+
+\section*{Allocation Granularity}
+
+Windows aligns each region of reserved process address space to begin on an integral boundary
+defined by the value of the system allocation granularity, which can be retrieved from the Windows GetSystemInfo or GetNativeSystemInfo function. This value is 64 KB, a granularity that is used by the memory manager to efficiently allocate metadata (for example, VADs, bitmaps, and so on) to support various process operations. In addition, if support were added for future processors with larger page sizes (for example, up to 64 KB) or virtually indexed caches that require systemwide physical-to-virtual page alignment, the risk of requiring changes to applications that made assumptions about allocation alignment would be reduced.\cite{[1]}
+
+Finally once a region of address space is reserved, the operating system ensures that the suze of the region is a multiple of the system page size.
+
+\section*{Memory Pools}
+Windows may also create memoery pools. The memory manager creates the following memory pools that the system uses to allocate memory: nonpaged pool and paged pool. Both memory pools are located in the region of the address space that is reserved for the system and mapped into the virtual address space of each process. The nonpaged pool consists of virtual memory addresses that are guaranteed to reside in physical memory as long as the corresponding kernel objects are allocated. The paged pool consists of virtual memory that can be paged in and out of the system. To improve performance, systems with a single processor have three paged pools, and multiprocessor systems have five paged pools.  
+
+%\lstinputlisting{scatter.c}
+%\lstinputlisting{gather.c}
+
+\section*{FreeBSD}
+
+In FreeBSD each process has its own private adddress space. This space is initally divided into three segments: text, date and stack. The text segment is read-only and contains the machine instructions of a program. The data and stack segments are both readable and writable. The data segment contains the initialized and uninitialized data portions of a program, whereas the stack segment holds the application's run-time stack. On most machines, the stack segment is extended automatically by the kernel as the process executes. A process can expand or contract its data segment by making a system call, whereas a process can change the size of its text segment only when the segment's contents are overlaid with data from the filesystem, or when debugging takes place. The initial contents of the segments of a child process are duplicates of the segments of a parent process.
+
+To support large sparce address spaces, mapped files and shared memoery freeBsd calls mmap, that allows unrealted processes to request a shared mapping of a file into their address spaces. If multiple processes are mapped to the same file, it changes the protion of the adress space.
+
+The kernel often does allocations of memory that are needed for only the duration of a single system call. In a user process, such short-term memory would be allocated on the run-time stack. Because the kernel has a limited run-time stack, it is not feasible to allocate even moderate-sized blocks of memory on it. Consequently, such memory must be allocated through a more dynamic mechanism. For example, when the system must translate a pathname, it must allocate a 1-Kbyte buffer to hold the name. Other blocks of memory must be more persistent than a single system call, and thus could not be allocated on the stack even if there was space. An example is protocol-control blocks that remain throughout the duration of a network connection.\cite{[2]}
+\section*{Conclusion}
+
+Both Linux and Windows have common features in between them, for example both operating systems use hardware abstraction later that is not system dependents so therefore the kernel can be coded independently, also if pages share same copy of the page is used between the processes. In both operating systems a file can be mapped onto memory, whcih then can be used for read/write instructions. For the above reasons both operating systems are actually really similar however they do use different functions and libraries and sometime different algorithms but to do the exactly the same thing. According to a forum from freebsd the memory allocation performance for FreeBSD is alittle bit better. Even if they both use the POSIX standards BSD uses almost half the memory because of this. This is usually caused by locks.
 
 
 \bibliographystyle{IEEEtran}
