@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2013.9.25)  9 JUN 2016 09:42
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2013.9.25)  9 JUN 2016 09:54
 entering extended mode
  %&-line parsing enabled.
 **final
@@ -964,14 +964,22 @@ Overfull \hbox (10.38452pt too wide) in paragraph at lines 1--2
 [][][][] 
  []
 
-[11]) [12] (./final.bbl) [13] (./final.aux) ) 
+[11]) [12]
+
+LaTeX Warning: Citation `linux' on page 13 undefined on input line 287.
+
+[13] [14] [15] [16] (./final.bbl [17]) [18] (./final.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 9469 strings out of 256217
- 127054 string characters out of 1917095
+ 9506 strings out of 256217
+ 127502 string characters out of 1917095
  218623 words of memory out of 1500000
- 12623 multiletter control sequences out of 10000+200000
+ 12660 multiletter control sequences out of 10000+200000
  25865 words of font info for 57 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
  33i,7n,58p,1264b,1841s stack positions out of 5000i,500n,6000p,200000b,15000s
 
-Output written on final.dvi (14 pages, 85424 bytes).
+Output written on final.dvi (19 pages, 109728 bytes).
